@@ -6,6 +6,7 @@ const IGNORE_REPOSITORIES = require("./lib/ignored-repositories");
 const toLabelsList = require("./lib/to-labels-list");
 const validateLabnels = require("./lib/validate-labels");
 const setCard = require("./lib/set-card");
+const normalizeLabels = require("./lib/normalize-labels");
 const Octokit = require("./lib/octokit");
 
 run();
@@ -24,7 +25,7 @@ async function run() {
         type: "public",
       }
     )) {
-      for (const repository of response.data.slice(3)) {
+      for (const repository of response.data) {
         console.log("-".repeat(80));
 
         if (repository.archived) {
@@ -37,59 +38,59 @@ async function run() {
           continue;
         }
 
-        console.log(`Loading issues for ${repository.name}`);
         const owner = repository.owner.login;
         const repo = repository.name;
 
-        console.log("loading issues");
+        // console.log(`Loading issues for ${repo}`);
 
-        // https://developer.github.com/v3/issues/#list-repository-issues
-        for await (const response of octokit.paginate.iterator(
-          "GET /repos/:owner/:repo/issues",
-          {
-            owner,
-            repo,
-            state: "open",
-          }
-        )) {
-          for (const issue of response.data) {
-            if (issue.pull_request) {
-              // pull requests are returned in the response, but their IDs are not the
-              continue;
-            }
+        // // https://developer.github.com/v3/issues/#list-repository-issues
+        // for await (const response of octokit.paginate.iterator(
+        //   "GET /repos/:owner/:repo/issues",
+        //   {
+        //     owner,
+        //     repo,
+        //     state: "open",
+        //   }
+        // )) {
+        //   for (const issue of response.data) {
+        //     if (issue.pull_request) {
+        //       // pull requests are returned in the response, but their IDs are not the
+        //       continue;
+        //     }
 
-            validateLabnels(issue);
+        //     validateLabnels(issue);
 
-            console.log(`- ${issue.html_url} ${toLabelsList(issue)}`);
+        //     console.log(`- ${issue.html_url} ${toLabelsList(issue)}`);
 
-            await setCard(octokit, issue);
-          }
-        }
+        //     await setCard(octokit, issue);
+        //   }
+        // }
 
-        console.log("loading pull requests");
+        // console.log(`Loading pull requests for ${repo}`);
 
-        // https://developer.github.com/v3/pulls/#list-pull-requests
-        for await (const response of octokit.paginate.iterator(
-          "GET /repos/:owner/:repo/pulls",
-          {
-            owner,
-            repo,
-            state: "open",
-          }
-        )) {
-          for (const pullRequest of response.data) {
-            validateLabnels(pullRequest);
+        // // https://developer.github.com/v3/pulls/#list-pull-requests
+        // for await (const response of octokit.paginate.iterator(
+        //   "GET /repos/:owner/:repo/pulls",
+        //   {
+        //     owner,
+        //     repo,
+        //     state: "open",
+        //   }
+        // )) {
+        //   for (const pullRequest of response.data) {
+        //     validateLabnels(pullRequest);
 
-            console.log(
-              `- ${pullRequest.html_url} ${toLabelsList(pullRequest)}`
-            );
+        //     console.log(
+        //       `- ${pullRequest.html_url} ${toLabelsList(pullRequest)}`
+        //     );
 
-            await setCard(octokit, pullRequest);
-          }
-        }
+        //     await setCard(octokit, pullRequest);
+        //   }
+        // }
 
         // https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository
-        // await normalizeLabels(octokit, { owner, repo });
+        console.log(`Normalizing labels for ${repo}`);
+        await normalizeLabels(octokit, { owner, repo });
       }
     }
 
