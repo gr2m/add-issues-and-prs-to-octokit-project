@@ -1,0 +1,17 @@
+{
+  "name": "add-issues-and-prs-to-octokit-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Gregor Martynus (https://twitter.com/gr2m)",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/core": "^2.5.0",
+    "@octokit/plugin-paginate-rest": "^2.2.0",
+    "@octokit/plugin-throttling": "^3.2.0"
+  }
+}
