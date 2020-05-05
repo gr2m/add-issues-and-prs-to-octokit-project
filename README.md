@@ -8,6 +8,17 @@ It also normalizes labels across the same repositories.
 
 I created it for a one-time use and future reference.
 
+## Usage
+
+```
+git clone https://github.com/gr2m/add-issues-and-prs-to-octokit-project.git
+cd add-issues-and-prs-to-octokit-project
+npm install
+GITHUB_TOKEN=[...] node index.js
+```
+
+Replace `[...]` with [a personal access token which includes the `repo` scope](https://github.com/settings/tokens/new?scopes=repo).
+
 ## License
 
 [ISC](LICENSE)
