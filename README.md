@@ -6,7 +6,7 @@ This script loads all open issues and pull requests from all public JavaScript-r
 
 It also normalizes labels across the same repositories.
 
-I created it for a one-time use and future reference.
+I created it for a one-time use and future reference. For ongoing update of the board, I've registered the [`Octokit JS Project Board` GitHub App](https://github.com/apps/octokit-js-project-board/). It's hosted on Glitch: https://glitch.com/edit/#!/octokit-js-project-board?path=index.js
 
 ## Usage
 
