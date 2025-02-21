@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "@octokit/core": "^6.1.4",
-    "@octokit/plugin-paginate-rest": "^2.2.0",
+    "@octokit/plugin-paginate-rest": "^9.2.2",
     "@octokit/plugin-throttling": "^3.2.0"
   },
   "repository": "github:gr2m/add-issues-and-prs-to-octokit-project"
